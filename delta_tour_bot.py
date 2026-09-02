@@ -244,6 +244,22 @@ def schedule_reminder(user_id, tariff_key):
 
 
 # ==========================================
+# VAQTINCHALIK: Stiker ID'sini bilish uchun
+# (Stiker ID'larini bilib olgach, bu qismni o'chirib tashlashingiz mumkin)
+# ==========================================
+
+@bot.message_handler(content_types=["sticker"])
+def get_sticker_id(message):
+    sticker_id = message.sticker.file_id
+    bot.reply_to(
+        message,
+        f"🆔 Stiker ID:\n<code>{sticker_id}</code>\n\n"
+        f"Buni nusxalab, menga (Claude'ga) yuboring.",
+        parse_mode="HTML"
+    )
+
+
+# ==========================================
 # Admin uchun: tasdiqlangach kanalga link yuborish
 # Foydalanish: admin botga shaxsan /approve @username deb yozadi
 # ==========================================
@@ -288,4 +304,3 @@ if __name__ == "__main__":
     # Flask serverni Render bergan portda ishga tushiramiz
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-
