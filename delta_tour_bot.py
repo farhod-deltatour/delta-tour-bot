@@ -188,11 +188,11 @@ TEXTS = {
         "greeting_reply": "Va alaykum assalom! Sizga qanday yordam bera olamiz? 😊",
         "thanks_reply": "Arzimaydi! Doim xizmatingizdamiz 🦅",
         # Pastki (doimiy) menyu tugmalari
-        "menu_tariffs": "📦 Obuna bo'lish",
+        "menu_tariffs": "🎫 Obuna bo'lish",
         "menu_manager": "💬 Menejer bilan aloqa",
         "menu_info": "ℹ️ Ma'lumot",
         "menu_location": "📍 Manzil",
-        "menu_free_channel": "🆓 Bepul kanal",
+        "menu_free_channel": "🎁 Bepul kanal",
         "menu_premium_channel": "💎 Premium kanal",
         "menu_complaint": "📝 Taklif va shikoyatlar",
         # "Ma'lumot" ichki bo'limi
@@ -282,11 +282,11 @@ TEXTS = {
         "phone_reply": "👤 <b>Связь с менеджером:</b>\n\nTelegram: {admin}\n{phones}",
         "greeting_reply": "И вам здравствуйте! Чем можем помочь? 😊",
         "thanks_reply": "Не за что! Всегда к вашим услугам 🦅",
-        "menu_tariffs": "📦 Оформить подписку",
+        "menu_tariffs": "🎫 Оформить подписку",
         "menu_manager": "💬 Связь с менеджером",
         "menu_info": "ℹ️ Информация",
         "menu_location": "📍 Адрес",
-        "menu_free_channel": "🆓 Бесплатный канал",
+        "menu_free_channel": "🎁 Бесплатный канал",
         "menu_premium_channel": "💎 Премиум канал",
         "menu_complaint": "📝 Предложения и жалобы",
         "info_about_btn": "🏢 О нас",
@@ -531,7 +531,7 @@ def send_tariffs_overview(chat_id, lang):
                 t["select_tariff_btn"].format(name=tariff["name"]), callback_data=f"tariff_{key}"
             )
         )
-    bot.send_message(chat_id, text, parse_mode="HTML", reply_markup=markup)
+    bot.send_message(chat_id, text, parse_mode="HTML", reply_markup=markup, disable_web_page_preview=True)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "all_info")
