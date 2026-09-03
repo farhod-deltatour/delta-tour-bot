@@ -89,19 +89,25 @@ STICKERS = {
 
 TARIFFS = {
     "uz": {
-        "standard": {"name": "STANDART", "period": "1 oyga (1 martalik to'lov)", "price": "atigi 150 000 so'm",
+        "standard": {"emoji": "⛱", "name": "STANDART", "period": "1 oyga (1 martalik to'lov)", "price": "atigi 150 000 so'm",
+                      "overview_line": "1 oyga (oyma-oy) atigi - 150 000 so'm",
                       "people": "Siz va +1 kishigacha (Chegirma amal qiladi)", "gifts": "—"},
-        "premium": {"name": "PREMIUM", "period": "3 oyga (1 martalik to'lov)", "price": "atigi 600 000 so'm",
+        "premium": {"emoji": "🥇", "name": "PREMIUM", "period": "3 oyga (1 martalik to'lov)", "price": "atigi 600 000 so'm",
+                     "overview_line": "xar 3 oyda 1 marta atigi 600 000 so'm",
                      "people": "Siz va +4 kishigacha (Chegirma amal qiladi)", "gifts": "Yostiqcha + esdalik sovg'a"},
-        "vip": {"name": "VIP", "period": "6 oyga (1 martalik to'lov)", "price": "2 300 000 so'm",
+        "vip": {"emoji": "👑", "name": "VIP", "period": "6 oyga (1 martalik to'lov)", "price": "2 300 000 so'm",
+                "overview_line": "2 300 000 so'm / 6 oylik",
                 "people": "10 kishigacha sovg'a qilish imkoni (Chegirma amal qiladi)", "gifts": "Esm + yostiqcha + maxsus esdalik + ryukzak"},
     },
     "ru": {
-        "standard": {"name": "СТАНДАРТ", "period": "1 месяц (единоразово)", "price": "всего 150 000 сум",
+        "standard": {"emoji": "⛱", "name": "СТАНДАРТ", "period": "1 месяц (единоразово)", "price": "всего 150 000 сум",
+                      "overview_line": "1 месяц (ежемесячно) всего - 150 000 сум",
                       "people": "Вы и +1 человек (Скидка действует)", "gifts": "—"},
-        "premium": {"name": "ПРЕМИУМ", "period": "3 месяца (единоразово)", "price": "всего 600 000 сум",
+        "premium": {"emoji": "🥇", "name": "ПРЕМИУМ", "period": "3 месяца (единоразово)", "price": "всего 600 000 сум",
+                     "overview_line": "раз в 3 месяца всего 600 000 сум",
                      "people": "Вы и +4 человека (Скидка действует)", "gifts": "Подушка + памятный подарок"},
-        "vip": {"name": "VIP", "period": "6 месяцев (единоразово)", "price": "2 300 000 сум",
+        "vip": {"emoji": "👑", "name": "VIP", "period": "6 месяцев (единоразово)", "price": "2 300 000 сум",
+                "overview_line": "2 300 000 сум / 6 месяцев",
                 "people": "Возможность подарить до 10 человек (Скидка действует)", "gifts": "Кепка + подушка + особый подарок + рюкзак"},
     },
 }
@@ -130,8 +136,9 @@ TEXTS = {
         ),
         "menu_hint": "Pastdagi menyudan kerakli bo'limni tanlashingiz mumkin 👇",
         "all_tariffs_title": "📋 <b>Barcha tariflar:</b>\n\n",
+        "note_btn": "Eslatma",
         "tariffs_note": (
-            "\n⚠️ <b>Eslatma:</b> Barcha chegirmalardan faqat pullik obuna aktiv "
+            "⚠️ <b>Eslatma:</b> Barcha chegirmalardan faqat pullik obuna aktiv "
             "vaqtida foydalanishingiz mumkin! Obuna muddati tugashidan oldin "
             "to'lovni amalga oshirishingizni so'raymiz.\n\n"
             "Ushbu eksklyuziv kanaldagi xizmatlardan turli xil ko'rinishdagi "
@@ -227,8 +234,9 @@ TEXTS = {
         ),
         "menu_hint": "Вы можете выбрать нужный раздел в меню ниже 👇",
         "all_tariffs_title": "📋 <b>Все тарифы:</b>\n\n",
+        "note_btn": "Примечание",
         "tariffs_note": (
-            "\n⚠️ <b>Примечание:</b> Все скидки действуют только во время активной "
+            "⚠️ <b>Примечание:</b> Все скидки действуют только во время активной "
             "платной подписки! Просим вас произвести оплату до истечения срока "
             "подписки.\n\n"
             "Различные ваучеры и сертификаты нельзя использовать на услуги этого "
@@ -519,19 +527,26 @@ def send_tariffs_overview(chat_id, lang):
     text = t["all_tariffs_title"]
     for tariff in TARIFFS[lang].values():
         text += (
-            f"<b>{tariff['name']}</b> — {tariff['price']} / {tariff['period']}\n"
+            f"{tariff['emoji']} <b>{tariff['name']}</b> — {tariff['overview_line']}\n"
             f"👥 {tariff['people']}\n"
             f"🎁 {tariff['gifts']}\n\n"
         )
-    text += t["tariffs_note"]
     markup = types.InlineKeyboardMarkup(row_width=1)
     for key, tariff in TARIFFS[lang].items():
         markup.add(
             types.InlineKeyboardButton(
-                t["select_tariff_btn"].format(name=tariff["name"]), callback_data=f"tariff_{key}"
+                f"{tariff['emoji']} {tariff['name']}", callback_data=f"tariff_{key}"
             )
         )
+    markup.add(types.InlineKeyboardButton(t["note_btn"], callback_data="show_note"))
     bot.send_message(chat_id, text, parse_mode="HTML", reply_markup=markup, disable_web_page_preview=True)
+
+
+@bot.callback_query_handler(func=lambda call: call.data == "show_note")
+def show_note(call):
+    lang = get_lang(call.message.chat.id) or DEFAULT_LANG
+    bot.send_message(call.message.chat.id, TEXTS[lang]["tariffs_note"], parse_mode="HTML", disable_web_page_preview=True)
+    bot.answer_callback_query(call.id)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "all_info")
