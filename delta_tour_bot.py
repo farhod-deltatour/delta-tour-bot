@@ -33,7 +33,7 @@ ADMIN_USERNAME = "@deltatour_admin"
 
 # Taklif/shikoyatlarni yuborish uchun sizning shaxsiy chat ID'ingiz.
 # /myid buyrug'i orqali oling va shu yerga qo'ying (raqam, tirnoqsiz).
-ADMIN_CHAT_ID = None  # <-- masalan: 123456789
+ADMIN_CHAT_ID = 5103323070
 
 # Click/Payme to'lov sahifangiz havolasi
 PAYMENT_LINK = "https://payme.uz/fallback/merchant/?id=6981e2d99949957019e20311"
