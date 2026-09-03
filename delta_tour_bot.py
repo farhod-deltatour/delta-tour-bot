@@ -56,7 +56,7 @@ OFFICE_LONGITUDE = 69.2754007070276
 OFFICE_PHOTO = "office_photo.jpg"
 
 # Litsenziya hujjatlari (PDF)
-LICENSE_DOCS = ["docs/guvohnoma.pdf", "docs/litsenziya.pdf"]
+LICENSE_DOCS = ["guvohnoma.pdf", "litsenziya.pdf"]
 
 # Foydalanuvchilar ro'yxati saqlanadigan fayl (bayram tabriklari uchun)
 USERS_FILE = "bot_users.json"
