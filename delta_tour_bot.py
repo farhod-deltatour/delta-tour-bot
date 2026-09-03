@@ -471,7 +471,7 @@ def send_main_menu(chat_id, lang):
     for key, tariff in TARIFFS[lang].items():
         markup.add(
             types.InlineKeyboardButton(
-                f"{tariff['name']} — {tariff['price']}", callback_data=f"tariff_{key}"
+                f"{tariff['emoji']} {tariff['name']} — {tariff['price']}", callback_data=f"tariff_{key}"
             )
         )
     markup.add(types.InlineKeyboardButton(t["all_info_btn"], callback_data="all_info"))
@@ -581,16 +581,7 @@ def show_tariff(call):
     markup.add(types.InlineKeyboardButton(t["paid_btn"], callback_data=f"paid_{key}"))
     markup.add(types.InlineKeyboardButton(t["back_btn"], callback_data="back_to_menu"))
 
-    try:
-        bot.edit_message_text(
-            text,
-            chat_id=call.message.chat.id,
-            message_id=call.message.message_id,
-            parse_mode="HTML",
-            reply_markup=markup,
-        )
-    except Exception:
-        bot.send_message(call.message.chat.id, text, parse_mode="HTML", reply_markup=markup)
+    bot.send_message(call.message.chat.id, text, parse_mode="HTML", reply_markup=markup)
     bot.answer_callback_query(call.id)
 
 
